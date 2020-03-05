@@ -1,0 +1,20 @@
+image: gradle:jdk11
+
+stages:
+  - test
+  - build
+  
+before_script:
+  - wget -qO- https://deb.nodesource.com/setup_12.x | bash -
+  - apt install -y nodejs
+
+test:
+  stage: test
+  script: 
+    - gradle test integrationTest jacocoTestReport
+  cache:
+    paths: [node_modules/]
+
+build:
+  stage: build
+  script: gradle build
