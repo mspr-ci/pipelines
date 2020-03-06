@@ -14,7 +14,7 @@ test:
   cache:
     paths: [node_modules/]
     
-integrationTest:
+integration_test:
   stage: test
   script: gradle integrationTest
   
