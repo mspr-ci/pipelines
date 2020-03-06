@@ -17,4 +17,4 @@ test:
 
 build:
   stage: build
-  script: gradle build
+  script: gradle -Pprod clean bootJar
