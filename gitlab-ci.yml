@@ -15,6 +15,9 @@ test:
     name: "jacocoTestReport"
     paths:
     - build/reports/jacoco/test/jacocoTestReport.xml
+coveralls:
+  stage: test
+  script: gradle coveralls
 
 linter:
   stage: test
