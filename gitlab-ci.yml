@@ -13,10 +13,6 @@ test:
   script: gradle test
   cache:
     paths: [node_modules/]
-    
-integration_test:
-  stage: test
-  script: gradle integrationTest
   
 linter:
   stage: test
