@@ -11,10 +11,18 @@ before_script:
 test:
   stage: test
   script: gradle test
+  artifacts:
+    name: "jacocoTestReport"
+    paths:
+    - build/reports/jacoco/test/jacocoTestReport.xml
 
 integration_test:
   stage: test
-  script: gradle integrationTest
+  script: gradle integrationTest jacocoTestReport
+  artifacts:
+    name: "jacocoIntegrationTestReport"
+    paths:
+    - build/reports/jacoco/test/jacocoTestReport.xml
 
 linter:
   stage: test
