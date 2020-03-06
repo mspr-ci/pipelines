@@ -10,8 +10,10 @@ before_script:
 
 test:
   stage: test
-  script: 
+  scripts: 
     - gradle test integrationTest jacocoTestReport
+    - npm install
+    - npm test
   cache:
     paths: [node_modules/]
     
@@ -22,4 +24,4 @@ linter:
 
 build:
   stage: build
-  script: gradle -Pprod clean bootJar
+  scripts: gradle -Pprod clean bootJar
