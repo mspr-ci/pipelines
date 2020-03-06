@@ -2,7 +2,6 @@ image: gradle:jdk11
 
 stages:
   - test
-  - build
 
 before_script:
   - wget -qO- https://deb.nodesource.com/setup_12.x | bash -
