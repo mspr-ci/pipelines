@@ -14,6 +14,11 @@ test:
     - gradle test integrationTest jacocoTestReport
   cache:
     paths: [node_modules/]
+    
+linter:
+  stage: test
+  script:
+    - gradle sonarqube
 
 build:
   stage: build
