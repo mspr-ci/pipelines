@@ -11,8 +11,6 @@ before_script:
 test:
   stage: test
   script: gradle test
-  cache:
-    paths: [node_modules/]
 
 integration_test:
   stage: test
@@ -26,3 +24,6 @@ linter:
 build:
   stage: build
   script: gradle -Pprod clean bootJar
+
+cache:
+  paths: [node_modules/]
