@@ -7,7 +7,6 @@ stages:
   - version
   - build
   - deploy
-  - production
 
 install packages:
   stage: prepare
@@ -59,8 +58,7 @@ build image:
   script:
     - echo 1
 
-production:
-  type: deploy
+deploy production:
   stage: production
   image: ruby:latest
   script:
@@ -68,9 +66,8 @@ production:
   only:
     - master
 
-staging:
-  type: deploy
-  stage: staging
+deploy staging:
+  stage: deploy
   image: ruby:latest
   script:
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
