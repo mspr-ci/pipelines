@@ -66,6 +66,7 @@ deploy production:
     - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
   only:
     - master
+  skip_cleanup: true
 
 deploy staging:
   stage: deploy
@@ -77,6 +78,7 @@ deploy staging:
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
   only:
     - staging
+  skip_cleanup: true
 
 deploy branch:
   stage: deploy
