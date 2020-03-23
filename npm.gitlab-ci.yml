@@ -58,23 +58,23 @@ build image:
 
 deploy production:
   stage: deploy
-  image: ruby:alpine
+  image: ruby:latest
   script:
-    - apk update 
-    - apk add ruby-dev
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
     - gem install dpl
-    - dpl-heroku --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
   only:
     - master
 
 deploy staging:
   stage: deploy
-  image: ruby:alpine
+  image: ruby:latest
   script:
-    - apk update 
-    - apk add ruby-dev
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
     - gem install dpl
-    - dpl-heroku --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
   only:
     - staging
 
