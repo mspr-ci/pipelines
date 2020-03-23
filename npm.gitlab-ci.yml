@@ -19,12 +19,7 @@ install packages:
 run tests:
   stage: test
   script:
-    - echo 1
-
-execute coverage:
-  stage: test
-  script:
-    - echo 1
+    - npm run test
 
 run sonar:
   stage: test
