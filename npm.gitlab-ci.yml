@@ -11,12 +11,10 @@ stages:
 install packages:
   stage: prepare
   script:
-    - echo 1
-
-run linter:
-  stage: test
-  script:
-    - echo 1
+    - npm install
+  cache:
+    paths:
+      - node_modules/
 
 run tests:
   stage: test
