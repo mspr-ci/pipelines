@@ -15,7 +15,8 @@ test:
 
 coveralls:
    needs:
-    - job: test
+     - job: test
+     artifacts: true
    stage: test
    script: gradle coveralls
 
