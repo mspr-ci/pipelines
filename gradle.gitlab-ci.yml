@@ -1,1 +1,15 @@
+image: gradle:jdk11
+
+stages:
+  - test
+  - build
+
+test:
+  stage: test
+  script: gradle test integrationTest
+
+build:
+  stage: build
+  script: gradle -Pprod clean bootJar
+
 
