@@ -52,10 +52,10 @@ next release:
 build package:
   stage: build
   script:
-    - npm install
+    - npm run build
   artifacts:
     paths:
-      - node_modules/
+      - build/
 
 build image:
   stage: build
