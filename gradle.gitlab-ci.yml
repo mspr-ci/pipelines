@@ -14,12 +14,12 @@ test:
       - build/reports/jacoco/test/jacocoTestReport.xml
 
 coveralls:
-    artifacts:
+  artifacts:
     paths:
-     - build/reports/jacoco/test/jacocoTestReport.xml
-     require: true
-   stage: test
-   script: gradle coveralls
+      - build/reports/jacoco/test/jacocoTestReport.xml
+      require: true
+  stage: test
+  script: gradle coveralls
 
 build:
   stage: build
