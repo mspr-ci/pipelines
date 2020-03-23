@@ -58,7 +58,7 @@ build image:
 
 deploy production:
   stage: deploy
-  image: ruby:latest
+  image: ruby:alpine
   script:
     - apk update 
     - apk add ruby-dev
@@ -69,7 +69,7 @@ deploy production:
 
 deploy staging:
   stage: deploy
-  image: ruby:latest
+  image: ruby:alpine
   script:
     - apk update 
     - apk add ruby-dev
