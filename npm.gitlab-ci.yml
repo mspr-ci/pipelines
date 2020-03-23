@@ -4,6 +4,7 @@ image: node:alpine
 stages:
   - prepare
   - test
+  - quality
   - version
   - build
   - deploy
@@ -22,9 +23,21 @@ run tests:
     - npm run test
 
 run sonar:
-  stage: test
+  stage: quality
+  image: adoptopenjdk/openjdk11:alpine-jre
+  before_script:
+    - apk add nodejs npm
   script:
-    - echo 1
+    - npm run sonarqube
+  cache:
+    paths:
+      - /var/cache/apk/
+      - /root/.sonar
+  variables:
+    SONARQUBE_URL: $SONAR_HOST_URL
+    SONARQUBE_TOKEN: $SONAR_LOGIN
+    SONARQUBE_ORGANIZATION: $SONAR_ORGANIZATION
+    SONARQUBE_PROJECTKEY: $SONAR_PROJECTKEY
 
 next minor:
   stage: version
