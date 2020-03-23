@@ -1,1 +1,69 @@
 
+image: node:alpine
+
+stages:
+  - prepare
+  - test
+  - version
+  - build
+  - deploy
+
+install packages:
+  stage: prepare
+  script:
+    - echo 1
+
+run linter:
+  stage: test
+  script:
+    - echo 1
+
+run tests:
+  stage: test
+  script:
+    - echo 1
+
+execute coverage:
+  stage: test
+  script:
+    - echo 1
+
+run sonar:
+  stage: test
+  script:
+    - echo 1
+
+next minor:
+  stage: version
+  script:
+    - echo 1
+
+next release:
+  stage: version
+  script:
+    - echo 1
+
+build package:
+  stage: build
+  script:
+    - echo 1
+
+build image:
+  stage: build
+  script:
+    - echo 1
+
+deploy production:
+  stage: deploy
+  script:
+    - echo 1
+
+deploy staging:
+  stage: deploy
+  script:
+    - echo 1
+
+deploy branch:
+  stage: deploy
+  script:
+    - echo 1
