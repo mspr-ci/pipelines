@@ -1,10 +1,5 @@
 
-image: node:latest
-
-before_script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
+image: node:alpine
 
 stages:
   - prepare
@@ -16,8 +11,9 @@ stages:
 install packages:
   stage: prepare
   script:
-    - echo 1
-
+    - apk update -qy
+    - apk add -y ruby-dev
+    - gem install dpl
 
 run linter:
   stage: test
