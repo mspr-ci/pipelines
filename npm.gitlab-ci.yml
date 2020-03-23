@@ -11,9 +11,7 @@ stages:
 install packages:
   stage: prepare
   script:
-    - apk update 
-    - apk add ruby-dev
-    - gem install dpl
+    - echo 1
 
 run linter:
   stage: test
@@ -62,6 +60,9 @@ deploy production:
   stage: deploy
   image: ruby:latest
   script:
+    - apk update 
+    - apk add ruby-dev
+    - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
   only:
     - master
@@ -70,6 +71,9 @@ deploy staging:
   stage: deploy
   image: ruby:latest
   script:
+    - apk update 
+    - apk add ruby-dev
+    - gem install dpl
     - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
   only:
     - staging
