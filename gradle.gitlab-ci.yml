@@ -16,8 +16,8 @@ test:
 coveralls:
    rules:
      - when:  
-      - exists:
-        - build/reports/jacoco/test/jacocoTestReport.xml
+        - exists:
+           - build/reports/jacoco/test/jacocoTestReport.xml
    stage: test
    script: gradle coveralls
 
