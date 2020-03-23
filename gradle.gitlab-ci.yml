@@ -14,9 +14,9 @@ test:
       - build/reports/jacoco/test/jacocoTestReport.xml
 
 coveralls:
-   needs:
-     - job: test
-     artifacts: true
+   rules:
+    - exists:
+      - build/reports/jacoco/test/jacocoTestReport.xml
    stage: test
    script: gradle coveralls
 
