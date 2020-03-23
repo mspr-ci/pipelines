@@ -59,7 +59,7 @@ build image:
   script:
     - echo 1
 
-deploy production:
+production:
   type: deploy
   stage: production
   image: ruby:latest
@@ -68,7 +68,7 @@ deploy production:
   only:
     - master
 
-deploy staging:
+staging:
   type: deploy
   stage: staging
   image: ruby:latest
