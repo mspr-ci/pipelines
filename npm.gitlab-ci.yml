@@ -1,5 +1,5 @@
 
-image: node:alpine
+image: node:latest
 
 before_script:
     - apt-get update -qy
