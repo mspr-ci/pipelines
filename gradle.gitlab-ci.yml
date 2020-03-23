@@ -6,7 +6,15 @@ stages:
 
 test:
   stage: test
-  script: gradle test integrationTest
+  script: gradle test integrationTest jacocoTestReport
+  artifacts:
+    name: "jacocoTestReport"
+    paths:
+      - build/reports/jacoco/test/jacocoTestReport.xml
+
+  coveralls:
+    stage: test
+    script: gradle coveralls
 
 build:
   stage: build
