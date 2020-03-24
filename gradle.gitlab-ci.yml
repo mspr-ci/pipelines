@@ -1,6 +1,7 @@
 image: gradle:jdk11
 
 stages:
+  - prepare
   - test
   - build
   - deploy
@@ -10,6 +11,17 @@ cache:
     - .gradle/wrapper
     - .gradle/caches
 
+renovate:
+  stage: prepare
+  images:
+    name: renovate/renovate
+    entrypoint: [""]
+  only:
+    - master
+  script: 
+    - cp config.js /usr/src/app/config.js
+    - node /usr/src/app/dist/renovate.js
+
 test:
   stage: test
   script: gradle test integrationTest jacocoTestReport
@@ -18,15 +30,12 @@ test:
     paths:
       - build/reports/jacoco/test/jacocoTestReport.xml
 
+
+
 coveralls:
   stage: test
   script: gradle coveralls
 
-renovate:
-  stage: build
-  image: docker:alpine
-  script:
-    - docker run -e GITLAB_TOKEN="$GITLAB_TOKEN" -e GITHUB_TOKEN="$GITHUB_TOKEN" -v $PWD/config.js:/usr/src/app/config.js renovate/renovate:13 $(cat repositories.txt | xargs)
 
 build package:
   stage: build
@@ -34,6 +43,8 @@ build package:
   artifacts:
     paths:
       - build/libs/*.jar
+
+
 
 build image:
   stage: deploy
