@@ -5,7 +5,7 @@ stages:
   - build
   - deploy
 
-test:test:
+test:
   stage: test
   script: gradle test integrationTest jacocoTestReport
   artifacts:
@@ -16,7 +16,6 @@ test:test:
 coveralls:test:
   stage: test
   script: gradle coveralls
-  needs: ["test:test"]
 
 build:
   stage: build
