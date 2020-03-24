@@ -64,7 +64,7 @@ build package:
     - npm run build
   artifacts:
     paths:
-      - dist
+      - build/resources/main/static/
   only:
     - master
 
