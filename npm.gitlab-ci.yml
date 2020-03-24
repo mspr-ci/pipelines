@@ -1,4 +1,6 @@
-image: node
+image:
+  name: node:alpine
+  entrypoint: ["/bin/sh"]
 
 stages:
   - prepare
