@@ -10,8 +10,8 @@ stages:
 
 cache:
   key: "CI_JOB_ID"
-    paths:
-      - node_modules/
+  paths:
+    - node_modules/
 
 install packages:
   stage: prepare
