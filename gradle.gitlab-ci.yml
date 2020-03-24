@@ -23,15 +23,12 @@ coveralls:
   stage: test
   script: gradle coveralls
 
-
 build package:
   stage: build
   script: gradle -Pprod clean bootJar
   artifacts:
     paths:
       - build/libs/*.jar
-
-
 
 deploy image:
   stage: deploy
@@ -45,12 +42,19 @@ deploy image:
 
 deploy production:
   stage: deploy
-  image: ruby:latest
+  image: docker:latest
+  variables:
+    DOCKER_DRIVER: overlay
+  services:
+    - docker:dind
   script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
-    - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+    - docker build -f ./docker/Dockerfile --iidfile imageid.txt -t registry.heroku.com/mspr-ci-production-api.
+    - docker login -u _ -p $HEROKU_AUTH_TOKEN registry.heroku.com
+    - docker push registry.heroku.com/mspr-ci-production-api
+    - apk add --no-cache curl
+    - echo "Docker Image ID is $(cat imageid.txt)"
+    - |-
+      curl -X PATCH https://api.heroku.com/apps/my-awesome-app/formation --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'
   only:
     - master
 
