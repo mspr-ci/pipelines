@@ -26,6 +26,10 @@ coveralls:
   needs:
     - job: test
       artifacts: true
+  only:
+    variables:
+      - $CI_JOB_NAME
+      - $CI_JOB_ID
 
 build package:
   stage: build
