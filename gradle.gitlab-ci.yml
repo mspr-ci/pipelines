@@ -3,8 +3,8 @@ image: gradle:jdk11
 stages:
   - prepare
   - test
-  - build
   - quality
+  - build
   - deploy
 
 cache:
