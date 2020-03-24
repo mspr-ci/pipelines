@@ -24,6 +24,7 @@ coveralls:
 
 renovate:
   stage: build
+  image: docker:alpine
   script:
     - docker run -e GITLAB_TOKEN="$GITLAB_TOKEN" -e GITHUB_TOKEN="$GITHUB_TOKEN" -v $PWD/config.js:/usr/src/app/config.js renovate/renovate:13 $(cat repositories.txt | xargs)
 
