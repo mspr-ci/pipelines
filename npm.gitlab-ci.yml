@@ -10,18 +10,12 @@ stages:
   - build
   - deploy
 
-<<<<<<< HEAD
 setup:
   stage: setup
   script:
     - npm ci
   only:
     - master
-=======
-cache:
-  paths:
-    - node_modules/
->>>>>>> 05643bbf3468379de7d6c2cec54123c38bed80f2
 
 install packages:
   stage: prepare
@@ -34,16 +28,12 @@ install packages:
 run tests:
   stage: test
   script:
-<<<<<<< HEAD
     - npm run test:unit
 
 execute coverage:
   stage: test
   script:
     - echo 1
-=======
-    - npm run test
->>>>>>> 05643bbf3468379de7d6c2cec54123c38bed80f2
 
 run sonar:
   stage: quality
