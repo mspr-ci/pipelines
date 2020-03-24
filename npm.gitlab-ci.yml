@@ -60,6 +60,7 @@ run sonar:
   script:
     - npm run sonarqube
   cache:
+    key: "SONAR_CACHE"
     paths:
       - /var/cache/apk/
       - /root/.sonar
