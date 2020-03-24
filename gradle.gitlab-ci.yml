@@ -13,7 +13,7 @@ cache:
 
 renovate:
   stage: prepare
-  images:
+  image:
     name: renovate/renovate
     entrypoint: [""]
   only:
