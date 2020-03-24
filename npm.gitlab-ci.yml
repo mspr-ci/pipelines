@@ -16,7 +16,7 @@ cache: &global_cache
 check packages:
   stage: prepare
   script:
-    - npm install
+    - npm install --cache .npm --prefer-offline
   except:
     changes:
       - package-lock.json
@@ -30,7 +30,7 @@ check packages:
 install packages:
   stage: prepare
   script:
-    - npm ci
+    - npm ci --cache .npm --prefer-offline
   only:
     changes:
       - package-lock.json
