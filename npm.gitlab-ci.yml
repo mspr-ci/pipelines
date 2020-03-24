@@ -2,11 +2,19 @@
 image: node:alpine
 
 stages:
+  - setup
   - prepare
   - test
   - version
   - build
   - deploy
+
+setup:
+  stage: setup
+  script:
+    - npm ci
+  only:
+    - master
 
 install packages:
   stage: prepare
@@ -21,7 +29,7 @@ run linter:
 run tests:
   stage: test
   script:
-    - echo 1
+    - npm run test:unit
 
 execute coverage:
   stage: test
@@ -46,10 +54,12 @@ next release:
 build package:
   stage: build
   script:
-    - npm install
+    - npm run build
   artifacts:
     paths:
-      - node_modules/
+      - dist
+  only:
+    - master
 
 build image:
   stage: build
@@ -58,12 +68,9 @@ build image:
 
 deploy production:
   stage: deploy
-  image: ruby:latest
   script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
-    - dpl --provider=heroku --app=$HEROKU_APP_PRODUCTION --api-key=$HEROKU_API_KEY
+    - npm i -g netlify-cli
+    - netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --prod
   only:
     - master
 
