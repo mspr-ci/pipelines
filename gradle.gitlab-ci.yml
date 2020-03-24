@@ -4,6 +4,7 @@ stages:
   - prepare
   - test
   - build
+  - quality
   - deploy
 
 cache:
@@ -20,8 +21,11 @@ test:
       - build/reports/jacoco/test/jacocoTestReport.xml
 
 coveralls:
-  stage: test
+  stage: quality
   script: gradle coveralls
+  needs:
+    - job: test
+      artifacts: true
 
 build package:
   stage: build
