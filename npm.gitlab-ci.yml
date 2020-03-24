@@ -86,8 +86,6 @@ build package:
   artifacts:
     paths:
       - build/resources/main/static/
-  only:
-    - master
 
 build image:
   stage: deploy
