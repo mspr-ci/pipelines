@@ -25,7 +25,7 @@ coveralls:
 build package:
   stage: build
   script: gradle -Pprod clean bootJar
-  artifact:
+  artifacts:
     paths:
       - build/libs/*.jar
   only:
