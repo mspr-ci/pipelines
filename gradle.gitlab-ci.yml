@@ -48,7 +48,7 @@ deploy production:
   services:
     - docker:dind
   script:
-    - docker build -f ./docker/Dockerfile --iidfile imageid.txt -t registry.heroku.com/mspr-ci-production-api
+    - docker build -f ./docker/Dockerfile --iidfile imageid.txt -t registry.heroku.com/mspr-ci-production-api .
     - docker login -u _ -p $HEROKU_AUTH_TOKEN registry.heroku.com
     - docker push registry.heroku.com/mspr-ci-production-api
     - apk add --no-cache curl
