@@ -16,7 +16,7 @@ test:
 coveralls:
   stage: test
   script: gradle coveralls
-  needs: ["test"]
+  needs: ["test:test"]
 
 build:
   stage: build
