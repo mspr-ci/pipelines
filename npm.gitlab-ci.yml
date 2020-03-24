@@ -13,10 +13,28 @@ cache:
   paths:
     - node_modules/
 
+check packages:
+  stage: prepare
+  script:
+    - npm install
+  except:
+    changes:
+      - package-lock.json
+  cache:
+    paths:
+      - /root/.npm/
+
 install packages:
   stage: prepare
   script:
     - npm ci
+  only:
+    changes:
+      - package-lock.json
+  cache:
+    paths:
+      - /root/.npm/
+
 
 run tests:
   stage: test
