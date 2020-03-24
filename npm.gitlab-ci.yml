@@ -1,4 +1,4 @@
-image: node:alpine
+image: node:lts-alpine
 
 stages:
   - prepare
