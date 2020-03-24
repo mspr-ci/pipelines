@@ -33,14 +33,13 @@ build package:
 
 
 
-build image:
+deploy image:
   stage: deploy
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   script:
     - PACKAGE_VERSION=$(cat build.gradle | grep "version =" | head -1 | awk -F= "{ print $2 }" | sed 's/[version=,\",]//g' | tr -d '[[:space:]]')
-    - echo $CI_PROJECT_DIR
     - echo "{\"auths\":{\"$DOCKER_REGISTRY\":{\"username\":\"$DOCKER_USER\",\"password\":\"$DOCKER_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/docker/Dockerfile --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:$PACKAGE_VERSION --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
 
