@@ -1,7 +1,6 @@
 image: node:alpine
 
 stages:
-  - setup
   - prepare
   - test
   - quality
@@ -9,17 +8,15 @@ stages:
   - build
   - deploy
 
-setup:
-  stage: setup
-  script:
-    - npm ci
-  only:
-    - master
+cache:
+  key: "CI_JOB_ID"
+    paths:
+      - node_modules/
 
 install packages:
   stage: prepare
   script:
-    - npm install
+    - npm ci
 
 run tests:
   stage: test
