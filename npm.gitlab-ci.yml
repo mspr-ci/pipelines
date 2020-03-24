@@ -5,41 +5,62 @@ stages:
   - setup
   - prepare
   - test
+  - quality
   - version
   - build
   - deploy
 
+<<<<<<< HEAD
 setup:
   stage: setup
   script:
     - npm ci
   only:
     - master
+=======
+cache:
+  paths:
+    - node_modules/
+>>>>>>> 05643bbf3468379de7d6c2cec54123c38bed80f2
 
 install packages:
   stage: prepare
   script:
-    - echo 1
-
-run linter:
-  stage: test
-  script:
-    - echo 1
+    - npm install
+  cache:
+    paths:
+      - node_modules/
 
 run tests:
   stage: test
   script:
+<<<<<<< HEAD
     - npm run test:unit
 
 execute coverage:
   stage: test
   script:
     - echo 1
+=======
+    - npm run test
+>>>>>>> 05643bbf3468379de7d6c2cec54123c38bed80f2
 
 run sonar:
-  stage: test
+  stage: quality
+  image: adoptopenjdk/openjdk11:alpine-jre
+  before_script:
+    - apk add nodejs npm
   script:
-    - echo 1
+    - npm run sonarqube
+  cache:
+    paths:
+      - /var/cache/apk/
+      - /root/.sonar
+  variables:
+    SONARQUBE_URL: $SONAR_HOST_URL
+    SONARQUBE_TOKEN: $SONAR_LOGIN
+    SONARQUBE_ORGANIZATION: $SONAR_ORGANIZATION
+    SONARQUBE_PROJECTKEY: $SONAR_PROJECTKEY
 
 next minor:
   stage: version

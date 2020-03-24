@@ -13,9 +13,9 @@ test:
     paths:
       - build/reports/jacoco/test/jacocoTestReport.xml
 
-# coveralls:
-#   stage: test
-#   script: gradle coveralls
+coveralls:
+  stage: test
+  script: gradle coveralls
 
 build:
   stage: build
