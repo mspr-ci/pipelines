@@ -28,8 +28,7 @@ coveralls:
       artifacts: true
   only:
     variables:
-      - $CI_JOB_NAME
-      - $CI_JOB_ID
+      - $CI_BUILD_NUMBER == $CI_JOB_ID
 
 build package:
   stage: build
