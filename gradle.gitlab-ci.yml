@@ -14,12 +14,9 @@ test:
       - build/reports/jacoco/test/jacocoTestReport.xml
 
 coveralls:
-  artifacts:
-    paths:
-      - build/reports/jacoco/test/jacocoTestReport.xml
-      require: true
   stage: test
   script: gradle coveralls
+  needs: ["test"]
 
 build:
   stage: build
