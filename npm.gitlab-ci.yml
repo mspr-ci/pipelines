@@ -24,7 +24,7 @@ install packages:
 run tests:
   stage: test
   script:
-    - npm run test:unit
+    - npm run test
 
 execute coverage:
   stage: test
