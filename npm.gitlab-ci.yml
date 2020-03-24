@@ -8,8 +8,8 @@ stages:
   - build
   - deploy
 
-cache:
-  key: "CI_JOB_ID"
+cache: &global_cache
+  policy: pull
   paths:
     - node_modules/
 
@@ -21,8 +21,11 @@ check packages:
     changes:
       - package-lock.json
   cache:
+    <<: *global_cache
+    policy: pull-push
     paths:
-      - /root/.npm/
+      - .npm/
+      - node_modules/
 
 install packages:
   stage: prepare
@@ -32,8 +35,11 @@ install packages:
     changes:
       - package-lock.json
   cache:
+    <<: *global_cache
+    policy: push
     paths:
-      - /root/.npm/
+      - .npm/
+      - node_modules/
 
 
 run tests:
