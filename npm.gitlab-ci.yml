@@ -83,6 +83,8 @@ build package:
   stage: build
   script:
     - npm run build
+  cache:
+    <<: *global_cache
   artifacts:
     paths:
       - build/resources/main/static/
