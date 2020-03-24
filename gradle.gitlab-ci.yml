@@ -5,6 +5,11 @@ stages:
   - build
   - deploy
 
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
 test:
   stage: test
   script: gradle test integrationTest jacocoTestReport
@@ -17,9 +22,14 @@ coveralls:
   stage: test
   script: gradle coveralls
 
-build:
+build package:
   stage: build
   script: gradle -Pprod clean bootJar
+  artifact:
+    paths:
+      - build/libs/*.jar
+  only:
+    - master
 
 deploy production:
   stage: deploy
