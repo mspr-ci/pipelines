@@ -46,24 +46,15 @@ deploy image:
     entrypoint: [""]
   script:
     - PACKAGE_VERSION=$(cat build.gradle | grep "version =" | head -1 | awk -F= "{ print $2 }" | sed 's/[version=,\",]//g' | tr -d '[[:space:]]')
-    - echo "{\"auths\":{\"$DOCKER_REGISTRY\":{\"username\":\"$DOCKER_USER\",\"password\":\"$DOCKER_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/docker/Dockerfile --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:$PACKAGE_VERSION --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
+    - echo "{\"auths\":{\"$DOCKER_REGISTRY\":{\"username\":\"$DOCKER_USER\",\"password\":\"$DOCKER_PASSWORD\"},\"registry.heroku.com\":{\"username\":\"_\",\"password\":\"$HEROKU_AUTH_TOKEN\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/docker/Dockerfile --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:$PACKAGE_VERSION --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:latest --destination registry.heroku.com/mspr-ci-production-api:$CI_COMMIT_SHORT_SHA
 
 deploy production:
   stage: deploy
-  image: docker:latest
-  variables:
-    DOCKER_DRIVER: overlay
-  services:
-    - docker:dind
+  image: alpine
   script:
-    - docker build -f ./docker/Dockerfile --iidfile imageid.txt -t registry.heroku.com/mspr-ci-production-api .
-    - docker login -u _ -p $HEROKU_AUTH_TOKEN registry.heroku.com
-    - docker push registry.heroku.com/mspr-ci-production-api
-    - apk add --no-cache curl
-    - echo "Docker Image ID is $(cat imageid.txt)"
-    - |-
-      curl -X PATCH https://api.heroku.com/apps/mspr-ci-production-api/formation  --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_AUTH_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'
+    - apk add curl
+    - curl -X PATCH https://api.heroku.com/apps/mspr-ci-production-api/formation  --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_AUTH_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "$CI_COMMIT_SHORT_SHA" } ] }'
   only:
     - master
 
