@@ -4,7 +4,8 @@ stages:
   - prepare
   - test
   - quality
-  - build
+  - build:package
+  - build:image
   - deploy
 
 cache:
@@ -32,14 +33,14 @@ run sonar:
       - build/reports/jacoco/test/jacocoTestReport.xml
 
 build package:
-  stage: build
+  stage: build:package
   script: gradle -Pprod clean bootJar
   artifacts:
     paths:
       - build/libs/*.jar
 
 deploy image:
-  stage: deploy
+  stage: build:image
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
