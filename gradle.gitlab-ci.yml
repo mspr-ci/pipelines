@@ -54,7 +54,8 @@ deploy production:
   image: alpine
   script:
     - apk add curl
-    - curl -X PATCH https://api.heroku.com/apps/mspr-ci-production-api/formation  --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_AUTH_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "$CI_COMMIT_SHORT_SHA" } ] }'
+    - |-
+      curl -X PATCH https://api.heroku.com/apps/mspr-ci-production-api/formation  --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_AUTH_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "'$CI_COMMIT_SHORT_SHA'" } ] }'
   only:
     - master
 
