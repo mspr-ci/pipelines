@@ -23,7 +23,9 @@ run tests:
 
 run sonar:
   stage: quality
-  script: gradle sonarqube
+  script:
+    - echo "sonar.login=${SONAR_TOKEN}" >> sonar-project.properties
+    - gradle sonarqube
   artifacts:
     name: "jacocoTestReport"
     paths:
