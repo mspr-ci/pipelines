@@ -14,7 +14,7 @@ cache:
 
 test:
   stage: test
-  script: gradle test integrationTest jacocoTestReport
+  script: gradle -Pprod clean check jacocoTestReport sonarqube
   artifacts:
     name: "jacocoTestReport"
     paths:
