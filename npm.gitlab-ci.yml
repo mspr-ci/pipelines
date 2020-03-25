@@ -46,11 +46,9 @@ run tests:
   stage: test
   script:
     - npm run test
-
-execute coverage:
-  stage: test
-  script:
-    - echo 1
+  artifacts:
+    paths:
+      - build/test-results/
 
 run sonar:
   stage: quality
