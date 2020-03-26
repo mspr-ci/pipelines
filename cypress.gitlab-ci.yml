@@ -5,9 +5,11 @@ services:
 
 # first, install Cypress, then run all tests (in parallel)
 stages:
+  - prepare
   - build
-  - test
   - deploy
+  - test
+
 
 # to cache both npm modules and Cypress binary we use environment variables
 # to point at the folders we can list as paths in "cache" job settings
@@ -22,8 +24,6 @@ variables:
   JDBC_DATABASE_USERNAME: postgres
   JDBC_DATABASE_PASSWORD: "postgres"
 
-# cache using branch name
-# https://gitlab.com/help/ci/caching/index.md
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
@@ -31,28 +31,38 @@ cache:
     - cache/Cypress
     - node_modules
 
-# this job installs NPM dependencies and Cypress
 cypress:
   image: cypress/base:10
   stage: build
   script:
     - npm ci
-    # check Cypress binary path and cached versions
-    # useful to make sure we are not carrying around old versions
     - npx cypress cache path
     - npx cypress cache list
 
-API:
+build api:
   image: gradle:jdk11
   stage: build
   script:
     - git clone https://github.com/mspr-ci/API.git
     - cd ./API
-    - ./gradlew bootRun
-IHM:
+    - gradle -Pprod clean bootJar
+    
+build ihm:
   stage: build
   script:
     - git clone https://github.com/mspr-ci/IHM.git
     - cd ./IHM
-    - npm install
-    - npm start
+    - npm run build
+  artifacts:
+    paths:
+      - build/resources/main/static/
+
+docker run api:
+  stage: deploy
+  image: docker:alpine
+  script: docker build -f ./API/docker/Dockerfile
+
+docker run ihm: 
+  stage: deploy
+  image: docker:alpine
+  script: docker build -f ./IHM/docker/Dockerfile
