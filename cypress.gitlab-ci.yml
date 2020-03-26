@@ -31,16 +31,13 @@ cache:
     - cache/Cypress
     - node_modules
 
-
-
-
 # this job installs NPM dependencies and Cypress
 cypress:
-  image: cypress/base:10
   stage: build
   script:
     - cd .. 
     - npm init
+    - npm install cypress --save-dev
 
 IHM:
   stage: build
