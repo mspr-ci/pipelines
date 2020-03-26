@@ -37,11 +37,11 @@ cypress:
   script:
     - git clone https://github.com/mspr-ci/API.git
     - cd ./API
-    - ./gradlew bootRun & wait-on http://localhost:8341
+    - ./gradlew bootRun && wait-on http://localhost:8341
     - cd ../
     - git clone https://github.com/mspr-ci/IHM.git
     - cd ./IHM
-    - npm install & npm start & wait-on http://localhost:9000
+    - npm install && npm start && wait-on http://localhost:9000
     - cd ../
     - npm ci
     - npx cypress cache path
