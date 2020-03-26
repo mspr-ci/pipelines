@@ -48,7 +48,7 @@ API:
   script:
     - git clone https://github.com/mspr-ci/API.git
     - cd ./API
-    #- ./gradlew bootRun
+    - ./gradlew bootRun
 
 
 IHM:
@@ -57,4 +57,4 @@ IHM:
     - git clone https://github.com/mspr-ci/IHM.git
     - cd ./IHM
     - npm install
-    #- npm start
+    - npm start
