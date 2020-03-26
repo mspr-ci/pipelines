@@ -60,15 +60,15 @@ build api:
     paths:
       - API/build/libs/*.jar
 
-build ihm:
-  stage: build
-  script:
-    - cd ./IHM
-    - npm install
-    - npm run build
-  artifacts:
-    paths:
-      - IHM/
+# build ihm:
+#   stage: build
+#   script:
+#     - cd ./IHM
+#     - npm install
+#     - npm run build
+#   artifacts:
+#     paths:
+#       - IHM/
 
 
 docker run:
@@ -77,6 +77,7 @@ docker run:
   services:
     - docker:dind
   script: 
+    - ls /API/build/libs/
     - docker build  -f ./API/docker/Dockerfile --tag api:1.0 .
     - docker run api:1.0
 
