@@ -62,16 +62,19 @@ build ihm:
       - IHM/
 
 
-docker run api:
+docker run:
   stage: deploy
   image: docker:latest
   script: 
   - ls
-  - docker build -f ./API/docker/Dockerfile .
+  - docker build -t API_IMAGE ./API/docker/Dockerfile .
+  - docker run API_IMAGE
 
-docker run ihm: 
-  stage: deploy
-  image: docker:latest
-  script: 
-  - ls
-  - docker build -f ./IHM/docker/Dockerfile .
+# docker run ihm: 
+#   stage: deploy
+#   image: docker:latest
+#   services:
+#     - docker:dind
+#   script: 
+#   - ls
+#   - docker build -t ./IHM/docker/Dockerfile .
