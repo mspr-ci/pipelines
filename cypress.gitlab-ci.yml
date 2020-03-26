@@ -5,9 +5,10 @@ services:
 
 # first, install Cypress, then run all tests (in parallel)
 stages:
-  - prepare
   - build
   - test
+  - deploy
+  - .post
 
 # to cache both npm modules and Cypress binary we use environment variables
 # to point at the folders we can list as paths in "cache" job settings
@@ -47,8 +48,8 @@ API:
   stage: build
   script:
     - git clone https://github.com/mspr-ci/API.git
-    - ls
-    - ./API/gradlew bootRun
+    - cd ./API
+    - ./gradlew bootRun
 
 
 IHM:
@@ -59,3 +60,8 @@ IHM:
     - cd ./IHM
     - npm install
     - npm start
+
+end:
+  stage: .post
+  script: 
+   - sudo killall
