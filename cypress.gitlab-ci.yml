@@ -46,6 +46,9 @@ build api:
     - git clone https://github.com/mspr-ci/API.git
     - cd ./API
     - gradle -Pprod clean bootJar
+  artifacts:
+    paths:
+      - /API
 
 build ihm:
   stage: build
@@ -54,10 +57,10 @@ build ihm:
     - cd ./IHM
     - npm install
     - npm run build
-
   artifacts:
     paths:
-      - build/resources/main/static/
+      - /IHM
+      
 
 docker run api:
   stage: deploy
