@@ -65,10 +65,12 @@ build ihm:
 docker run:
   stage: deploy
   image: docker:latest
+  services:
+    - docker:bind
   script: 
-  - ls
-  - docker build  -f ./API/docker/Dockerfile --tag api:1.0 .
-  - docker run api:1.0
+    - ls
+    - docker build  -f ./API/docker/Dockerfile --tag api:1.0 .
+    - docker run api:1.0
 
 # docker run ihm: 
 #   stage: deploy
