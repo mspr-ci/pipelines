@@ -109,20 +109,6 @@ build package:
     paths:
       - build/resources/main/static/
 
-generate changelog:
-  stage: build
-  before_script:
-    - apk add git
-    - git config user.name $GIT_ACCESS_USER
-    - git config user.email $GIT_ACCESS_EMAIL
-    - printenv
-  after_script:
-    - |-
-      git commit -m chore(changelog): update changelog"
-    - git push
-  script:
-    - npm run version
-
 build image:
   stage: deploy
   image:
