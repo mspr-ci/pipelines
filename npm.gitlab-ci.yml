@@ -15,9 +15,6 @@ cache: &global_cache
   paths:
     - node_modules/
 
-variables:
-  VERSION_MESSAGE: "chore(package): update version to %s"
-
 check packages:
   stage: prepare
   script:
@@ -68,36 +65,15 @@ run sonar:
     SONARQUBE_ORGANIZATION: $SONAR_ORGANIZATION
     SONARQUBE_PROJECTKEY: $SONAR_PROJECTKEY
 
-next major:
-  stage: version
-  before_script:
-    - apk add git
-  script:
-    - npm version major -m "$VERSION_MESSAGE"
-    - git push --tags
-  when: manual
-  only:
-    refs:
-      - master
-      - merge_requests
-
 next minor:
   stage: version
   script:
-    - npm version minor -m "$VERSION_MESSAGE"
-  only:
-    refs:
-      - master
-      - merge_requests
+    - echo 1
 
-next patch:
+next release:
   stage: version
   script:
-    - npm version patch -m "$VERSION_MESSAGE"
-  only:
-    refs:
-      - develop
-      - merge_requests
+    - echo 1
 
 build package:
   stage: build
