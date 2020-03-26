@@ -62,9 +62,13 @@ build ihm:
 docker run api:
   stage: deploy
   image: docker:latest
-  script: docker build -f ./API/docker/Dockerfile .
+  script: 
+  - ls
+  - docker build ./API/docker/Dockerfile .
 
 docker run ihm: 
   stage: deploy
   image: docker:latest
-  script: docker build -f ./IHM/docker/Dockerfile .
+  script: 
+  - ls
+  - docker build ./IHM/docker/Dockerfile .
