@@ -33,11 +33,17 @@ cache:
 
 # this job installs NPM dependencies and Cypress
 cypress:
+  image: cypress/base:10
   stage: build
   script:
-    - cd .. 
-    - npm init
-    - npm install cypress --save-dev
+    - npm ci
+    # check Cypress binary path and cached versions
+    # useful to make sure we are not carrying around old versions
+    - npx cypress cache path
+    - npx cypress cache list
+    - $(npm bin)/print-env CI
+    - npm run cy:verify
+    - npm run cy:info 
 
 IHM:
   stage: build
