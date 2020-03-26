@@ -49,6 +49,7 @@ build api:
   artifacts:
     paths:
       - API/
+      - API/build/libs/*.jar
 
 build ihm:
   stage: build
