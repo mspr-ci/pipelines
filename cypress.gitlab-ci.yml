@@ -66,7 +66,7 @@ docker run:
   stage: deploy
   image: docker:latest
   services:
-    - docker:bind
+    - docker:dind
   script: 
     - ls
     - docker build  -f ./API/docker/Dockerfile --tag api:1.0 .
