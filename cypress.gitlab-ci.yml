@@ -31,6 +31,17 @@ cache:
     - cache/Cypress
     - node_modules
 
+prepare:
+  stage: prepare
+  script:
+    - git clone https://github.com/mspr-ci/IHM.git
+    - git clone https://github.com/mspr-ci/API.git
+  artifacts:
+    paths:
+      - API/
+      - IHM/
+
+
 cypress:
   image: cypress/base:10
   stage: build
@@ -43,18 +54,15 @@ build api:
   image: gradle:jdk11
   stage: build
   script:
-    - git clone https://github.com/mspr-ci/API.git
     - cd ./API
-    - gradle -Pprod clean bootJar
+    - ./gradlew -Pprod clean bootJar
   artifacts:
     paths:
-      - API/
       - API/build/libs/*.jar
 
 build ihm:
   stage: build
   script:
-    - git clone https://github.com/mspr-ci/IHM.git
     - cd ./IHM
     - npm install
     - npm run build
@@ -69,7 +77,6 @@ docker run:
   services:
     - docker:dind
   script: 
-    - ls
     - docker build  -f ./API/docker/Dockerfile --tag api:1.0 .
     - docker run api:1.0
 
