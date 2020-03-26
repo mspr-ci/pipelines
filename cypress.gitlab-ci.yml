@@ -41,7 +41,6 @@ cypress:
     # useful to make sure we are not carrying around old versions
     - npx cypress cache path
     - npx cypress cache list
-    - npm run cy:info 
 
 API:
   image: gradle:jdk11
