@@ -1,0 +1,62 @@
+image: node:latest
+
+services:
+  - postgres:12.2-alpine
+
+# first, install Cypress, then run all tests (in parallel)
+stages:
+  - prepare
+  - build
+  - test
+
+# to cache both npm modules and Cypress binary we use environment variables
+# to point at the folders we can list as paths in "cache" job settings
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+  POSTGRES_DB: mspr_ci
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: "postgres"
+  POSTGRES_HOST_AUTH_METHOD: trust
+  JDBC_DATABASE_URL: mspr_ci
+  JDBC_DATABASE_USERNAME: postgres
+  JDBC_DATABASE_PASSWORD: "postgres"
+
+# cache using branch name
+# https://gitlab.com/help/ci/caching/index.md
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .npm
+    - cache/Cypress
+    - node_modules
+
+# this job installs NPM dependencies and Cypress
+cypress:
+  image: cypress/base:10
+  stage: build
+  script:
+    - npm ci
+    # check Cypress binary path and cached versions
+    # useful to make sure we are not carrying around old versions
+    - npx cypress cache path
+    - npx cypress cache list
+    - npm run cy:info 
+
+IHM:
+  stage: build
+  script:
+    - git clone https://github.com/mspr-ci/API.git
+    - ls
+    - cd /API
+    - ./gradlew -x webpack
+
+API:
+  image: gradle:jdk11
+  stage: build
+  script:
+    - git clone https://github.com/mspr-ci/IHM.git
+    - ls
+    - cd /IHM
+    - npm install
+    - npm start

@@ -48,11 +48,9 @@ run tests:
   stage: test
   script:
     - npm run test
-
-execute coverage:
-  stage: test
-  script:
-    - echo 1
+  artifacts:
+    paths:
+      - build/test-results/
 
 run sonar:
   stage: quality
@@ -61,10 +59,6 @@ run sonar:
     - apk add nodejs npm
   script:
     - npm run sonarqube
-  cache:
-    paths:
-      - /var/cache/apk/
-      - /root/.sonar
   variables:
     SONARQUBE_URL: $SONAR_HOST_URL
     SONARQUBE_TOKEN: $SONAR_LOGIN
@@ -85,6 +79,8 @@ build package:
   stage: build
   script:
     - npm run build
+  cache:
+    <<: *global_cache
   artifacts:
     paths:
       - build/resources/main/static/
