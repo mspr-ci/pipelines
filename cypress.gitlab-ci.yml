@@ -51,6 +51,7 @@ IHM:
     - ./gradlew -x webpack
 
 API:
+  image: gradle:jdk11
   stage: build
   script:
     - git clone https://github.com/mspr-ci/IHM.git
