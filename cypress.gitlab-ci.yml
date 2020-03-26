@@ -39,7 +39,8 @@ cypress:
   image: cypress/base:10
   stage: build
   script:
-    - cd .. && npm init
+    - cd .. 
+    - npm init
 
 IHM:
   stage: build
