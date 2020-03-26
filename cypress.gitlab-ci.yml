@@ -1,5 +1,8 @@
 image: node:latest
 
+services:
+  - postgres:12.2-alpine
+
 # first, install Cypress, then run all tests (in parallel)
 stages:
   - prepare
@@ -11,6 +14,13 @@ stages:
 variables:
   npm_config_cache: "$CI_PROJECT_DIR/.npm"
   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+  POSTGRES_DB: mspr_ci
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: "postgres"
+  POSTGRES_HOST_AUTH_METHOD: trust
+  JDBC_DATABASE_URL: mspr_ci
+  JDBC_DATABASE_USERNAME: postgres
+  JDBC_DATABASE_PASSWORD: "postgres"
 
 # cache using branch name
 # https://gitlab.com/help/ci/caching/index.md
@@ -20,6 +30,9 @@ cache:
     - .npm
     - cache/Cypress
     - node_modules
+
+
+
 
 # this job installs NPM dependencies and Cypress
 cypress:
@@ -32,8 +45,11 @@ IHM:
   stage: build
   script:
     - git clone https://github.com/mspr-ci/API.git
+    - ./gradlew -x webpack
 
 API:
   stage: build
   script:
     - git clone https://github.com/mspr-ci/IHM.git
+    - npm install
+    - npm start
