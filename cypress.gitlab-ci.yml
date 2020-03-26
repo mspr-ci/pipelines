@@ -31,19 +31,29 @@ cache:
     - cache/Cypress
     - node_modules
 
+# this job installs NPM dependencies and Cypress
 cypress:
+  image: cypress/base:10
+  stage: build
+  script:
+    - npm ci
+    # check Cypress binary path and cached versions
+    # useful to make sure we are not carrying around old versions
+    - npx cypress cache path
+    - npx cypress cache list
+
+API:
   image: gradle:jdk11
   stage: build
   script:
     - git clone https://github.com/mspr-ci/API.git
     - cd ./API
-    - ./gradlew bootRun
-    - cd ../
+    - ./gradlew bootRun & wait-on http://localhost:8080
+
+IHM:
+  stage: build
+  script:
     - git clone https://github.com/mspr-ci/IHM.git
     - cd ./IHM
-    - npm install 
+    - npm install
     - npm start
-    - cd ../
-    - npm ci
-    - npx cypress cache path
-    - npx cypress cache list
