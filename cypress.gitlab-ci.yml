@@ -48,8 +48,8 @@ API:
   script:
     - git clone https://github.com/mspr-ci/API.git
     - ls
-    - ./API/gradlew -x webpack
-    
+    - ./API/gradlew bootRun
+
 
 IHM:
   stage: build
