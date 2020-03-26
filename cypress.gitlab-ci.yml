@@ -52,7 +52,7 @@ build ihm:
   script:
     - git clone https://github.com/mspr-ci/IHM.git
     - cd ./IHM
-    - npm ci --cache .npm --prefer-offline
+    - npm install
     - npm run build
 
   artifacts:
