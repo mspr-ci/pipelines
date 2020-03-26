@@ -48,7 +48,7 @@ build api:
     - gradle -Pprod clean bootJar
   artifacts:
     paths:
-      - /API
+      - API/
 
 build ihm:
   stage: build
@@ -59,8 +59,8 @@ build ihm:
     - npm run build
   artifacts:
     paths:
-      - /IHM
-      
+      - IHM/
+
 
 docker run api:
   stage: deploy
