@@ -43,20 +43,19 @@ cypress:
     - npx cypress cache list
     - npm run cy:info 
 
-IHM:
-  stage: build
-  script:
-    - git clone https://github.com/mspr-ci/API.git
-    - ls
-    - cd /API
-    - ./gradlew -x webpack
-
 API:
   image: gradle:jdk11
   stage: build
   script:
+    - git clone https://github.com/mspr-ci/API.git
+    - ls
+    - ./API/gradlew -x webpack
+
+IHM:
+  stage: build
+  script:
     - git clone https://github.com/mspr-ci/IHM.git
     - ls
-    - cd /IHM
+    - cd ./IHM
     - npm install
     - npm start
