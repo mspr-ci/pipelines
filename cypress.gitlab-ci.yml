@@ -67,8 +67,8 @@ docker run:
   image: docker:latest
   script: 
   - ls
-  - docker build -t API_IMAGE ./API/docker/Dockerfile .
-  - docker run API_IMAGE
+  - sudo docker build  -f ./API/docker/Dockerfile . --tag API_IMAGE:1.0 .
+  - docker run API_IMAGE:1.0
 
 # docker run ihm: 
 #   stage: deploy
