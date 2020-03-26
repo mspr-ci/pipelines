@@ -22,14 +22,18 @@ cache:
     - node_modules
 
 # this job installs NPM dependencies and Cypress
-install:
+cypress:
   image: cypress/base:10
   stage: build
   script:
-    # check Cypress binary path and cached versions
-    # useful to make sure we are not carrying around old versions
-    - npx cypress cache path
-    - npx cypress cache list
-    - $(npm bin)/print-env CI
-    - npm run cy:verify
-    - npm run cy:info
+    - cd .. && npm init
+
+IHM:
+  stage: build
+  script:
+    - git clone https://github.com/mspr-ci/API.git
+
+API:
+  stage: build
+  script:
+    - git clone https://github.com/mspr-ci/IHM.git
