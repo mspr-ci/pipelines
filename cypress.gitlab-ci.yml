@@ -60,8 +60,3 @@ IHM:
     - cd ./IHM
     - npm install
     - npm start
-
-end:
-  stage: .post
-  script: 
-   - sudo killall
