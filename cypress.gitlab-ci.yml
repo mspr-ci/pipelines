@@ -75,7 +75,13 @@ docker run:
     - docker:dind
     - postgres:12.2-alpine
   script: 
-    - ls /API/
+    - ls 
+    - cd API/
+    - ls
+    - cd build/
+    - ls 
+    - cd libs/
+    - ls
     - docker build  -f ./API/docker/Dockerfile --tag api:1.0 .
     - docker run api:1.0
 
