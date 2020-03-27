@@ -1,6 +1,4 @@
-image:
-  name: node:alpine
-  entrypoint: ["/bin/sh"]
+image: node:alpine
 
 stages:
   - prepare
@@ -77,6 +75,9 @@ next release:
 
 build package:
   stage: build
+  image:
+    name: node:alpine
+    entrypoint: ["/bin/sh"]
   script:
     - npm run build
   cache:
