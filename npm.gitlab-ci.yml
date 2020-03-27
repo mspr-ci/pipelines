@@ -77,7 +77,7 @@ build package:
   stage: build
   image:
     name: node:alpine
-    entrypoint: ["/bin/sh"]
+    command: ["/bin/sh"]
   script:
     - npm run build
   cache:
