@@ -31,7 +31,7 @@ cache:
 prepare:
   stage: prepare
   script:
-    - git clone https://github.com/mspr-ci/IHM.git
+    # - git clone https://github.com/mspr-ci/IHM.git
     - git clone https://github.com/mspr-ci/API.git
   artifacts:
     paths:
@@ -39,13 +39,13 @@ prepare:
       - IHM/
 
 
-cypress:
-  image: cypress/base:10
-  stage: build
-  script:
-    - npm ci
-    - npx cypress cache path
-    - npx cypress cache list
+# cypress:
+#   image: cypress/base:10
+#   stage: build
+#   script:
+#     - npm ci
+#     - npx cypress cache path
+#     - npx cypress cache list
 
 build api:
   image: gradle:jdk11
@@ -74,7 +74,7 @@ docker run:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]
   script: 
-    - PACKAGE_VERSION=$(cat build.gradle | grep "version =" | head -1 | awk -F= "{ print $2 }" | sed 's/[version=,\",]//g' | tr -d '[[:space:]]')
+    - cd API/
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/API/Docker/Dockerfile --no-push
 
 # docker run ihm: 
