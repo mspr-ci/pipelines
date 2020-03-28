@@ -118,7 +118,7 @@ generate changelog:
     - printenv
   after_script:
     - |-
-      git commit -m chore(changelog): update changelog"
+      git commit -m "chore(changelog): update changelog"
     - git push
   script:
     - npm run version
