@@ -113,10 +113,10 @@ generate changelog:
   stage: build
   before_script:
     - apk add git
-    - git config user.name $GIT_ACCESS_USER
-    - git config user.email $GIT_ACCESS_EMAIL
     - printenv
   script:
+    - git config user.name $GIT_ACCESS_USER
+    - git config user.email $GIT_ACCESS_EMAIL
     - npm run version
   after_script:
     - |-
