@@ -116,12 +116,12 @@ generate changelog:
     - git config user.name $GIT_ACCESS_USER
     - git config user.email $GIT_ACCESS_EMAIL
     - printenv
+  script:
+    - npm run version
   after_script:
     - |-
       git commit -m "chore(changelog): update changelog"
     - git push
-  script:
-    - npm run version
 
 build image:
   stage: deploy
