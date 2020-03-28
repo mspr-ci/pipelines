@@ -70,14 +70,12 @@ build api:
 
 docker run:
   stage: deploy
-  image: docker:latest
-  services:
-    - docker:dind
-    - postgres:12.2-alpine
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
   script: 
-    - cd API/
-    - docker build  -f ./docker/Dockerfile --tag api:1.0 .
-    - docker run api:1.0
+    - PACKAGE_VERSION=$(cat build.gradle | grep "version =" | head -1 | awk -F= "{ print $2 }" | sed 's/[version=,\",]//g' | tr -d '[[:space:]]')
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/API/Docker/Dockerfile --no-push
 
 # docker run ihm: 
 #   stage: deploy
