@@ -19,6 +19,8 @@ cache: &global_cache
 .prepare_git: &prepare_git
   before_script:
     - apk add git
+    - git remote set-url origin $GIT_URL
+    - echo "$GIT_SSH" | tr -d '\r' | ssh-add -
     - git config --global user.name "$GITLAB_USER_NAME"
     - git config --global user.email "$GITLAB_USER_EMAIL"
   after_script:
