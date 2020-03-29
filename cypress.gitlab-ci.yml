@@ -26,13 +26,13 @@ cache:
     - cache/Cypress
     - node_modules
 
-cypress:
-  image: cypress/base:10
-  stage: build
-  script:
-    - npm ci
-    - npx cypress cache path
-    - npx cypress cache list
+# cypress:
+#   image: cypress/base:10
+#   stage: build
+#   script:
+#     - npm ci
+#     - npx cypress cache path
+#     - npx cypress cache list
 
 docker run:
   stage: deploy
@@ -41,7 +41,7 @@ docker run:
     - docker:dind
     - postgres:12.2-alpine
   script: 
-    - echo "{\"auths\":{\"$DOCKER_REGISTRY\":{\"username\":\"$DOCKER_USER\",\"password\":\"$DOCKER_PASSWORD\"}}}" >> ~/.docker/config.json
+    - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
     - docker pull docker.pkg.github.com/mspr-ci/api/invoice_api:0.0.1-snapshot
     - docker pull docker.pkg.github.com/mspr-ci/ihm/invoice_ihm:latest
     - docker run -d -it -p 8341:8341 invoice_api:0.0.1-snapshot
