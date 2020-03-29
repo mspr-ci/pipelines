@@ -47,7 +47,10 @@ deploy image:
   script:
     - PACKAGE_VERSION=$(cat build.gradle | grep "version =" | head -1 | awk -F= "{ print $2 }" | sed 's/[version=,\",]//g' | tr -d '[[:space:]]')
     - echo "{\"auths\":{\"$DOCKER_REGISTRY\":{\"username\":\"$DOCKER_USER\",\"password\":\"$DOCKER_PASSWORD\"},\"registry.heroku.com\":{\"username\":\"_\",\"password\":\"$HEROKU_AUTH_TOKEN\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/docker/Dockerfile --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:$PACKAGE_VERSION --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:latest --destination registry.heroku.com/mspr-ci-production-api:$CI_COMMIT_SHORT_SHA
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/docker/Dockerfile --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:$PACKAGE_VERSION --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:latest --destination registry.heroku.com/mspr-ci-production-api:$CI_COMMIT_SHORT_SHA --digest-file imageid.txt
+  artifacts:
+    paths:
+      - imageid.txt
 
 deploy production:
   stage: deploy
@@ -55,7 +58,7 @@ deploy production:
   script:
     - apk add curl
     - |-
-      curl -X PATCH https://api.heroku.com/apps/mspr-ci-production-api/formation  --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_AUTH_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "'$CI_COMMIT_SHORT_SHA'" } ] }'
+      curl -X PATCH https://api.heroku.com/apps/mspr-ci-production-api/formation  --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_AUTH_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }'
   only:
     - master
 
