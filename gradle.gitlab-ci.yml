@@ -59,7 +59,7 @@ deploy production:
     - docker:dind  
   script:
     - echo "Docker Image ID $(cat imageid.txt)"
-    - docker image -q $DOCKER_REGISTRY/$DOCKER_IMAGE:$PACKAGE_VERSION
+    - docker images -q $DOCKER_REGISTRY/$DOCKER_IMAGE:$PACKAGE_VERSION
     - apk add curl
     - |-
       curl -X PATCH https://api.heroku.com/apps/mspr-ci-production-api/formation  --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_AUTH_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'"} ] }' --fail
