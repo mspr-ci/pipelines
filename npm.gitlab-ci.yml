@@ -15,6 +15,11 @@ cache: &global_cache
   paths:
     - node_modules/
 
+.prepare git: &prepare_git
+  - apk add git
+  - git config --global user.name "$GITLAB_USER_NAME"
+  - git config --global user.email "$GITLAB_USER_EMAIL"
+
 variables:
   VERSION_MESSAGE: "chore(package): update version to %s"
 
@@ -71,7 +76,7 @@ run sonar:
 next major:
   stage: version
   before_script:
-    - apk add git
+    - *prepare_git
   script:
     - npm version major -m "$VERSION_MESSAGE"
     - git push --tags
@@ -83,6 +88,8 @@ next major:
 
 next minor:
   stage: version
+  before_script:
+    - *prepare_git
   script:
     - npm version minor -m "$VERSION_MESSAGE"
   only:
@@ -92,6 +99,8 @@ next minor:
 
 next patch:
   stage: version
+  before_script:
+    - *prepare_git
   script:
     - npm version patch -m "$VERSION_MESSAGE"
   only:
@@ -112,9 +121,7 @@ build package:
 generate changelog:
   stage: build
   before_script:
-    - apk add git
-    - git config --global user.name "$GITLAB_USER_NAME"
-    - git config --global user.email "$GITLAB_USER_EMAIL"
+    - *prepare_git
   script:
     - npm run changelog
   after_script:
