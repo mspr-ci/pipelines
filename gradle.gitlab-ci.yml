@@ -56,9 +56,10 @@ deploy production:
   stage: deploy
   image: alpine
   script:
+    - echo "Docker Image ID $(cat imageid.txt)"
     - apk add curl
     - |-
-      curl -X PATCH https://api.heroku.com/apps/mspr-ci-production-api/formation  --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_AUTH_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'" } ] }' --fail
+      curl -X PATCH https://api.heroku.com/apps/mspr-ci-production-api/formation  --header "Content-Type: application/json" --header "Accept: application/vnd.heroku+json; version=3.docker-releases" --header "Authorization: Bearer ${HEROKU_AUTH_TOKEN}" --data '{ "updates": [ { "type": "web", "docker_image": "'$(cat imageid.txt)'"} ] }' --fail
   only:
     - master
 
