@@ -119,9 +119,7 @@ generate changelog:
     - git config user.email $GIT_ACCESS_EMAIL
     - npm run changelog
   after_script:
-    - |-
-      git commit -m "chore(changelog): update changelog"
-    - git push
+    - "git commit -m 'chore(changelog): update changelog'"
 
 build image:
   stage: deploy
