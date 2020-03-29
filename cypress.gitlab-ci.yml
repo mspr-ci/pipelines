@@ -3,7 +3,7 @@ image: node:latest
 # first, install Cypress, then run all tests (in parallel)
 stages:
   - build
-  - deploy
+  - test
 
 
 # to cache both npm modules and Cypress binary we use environment variables
@@ -26,16 +26,16 @@ cache:
     - cache/Cypress
     - node_modules
 
-# cypress:
-#   image: cypress/base:10
-#   stage: build
-#   script:
-#     - npm ci
-#     - npx cypress cache path
-#     - npx cypress cache list
+cypress:
+  image: cypress/base:10
+  stage: build
+  script:
+    - npm ci
+    - npx cypress cache path
+    - npx cypress cache list
 
 docker run:
-  stage: deploy
+  stage: test
   image: docker:latest
   services:
     - docker:dind
@@ -46,4 +46,5 @@ docker run:
     - docker pull docker.pkg.github.com/mspr-ci/ihm/invoice_ihm:latest
     - docker run -d -it -p 8341:8341 docker.pkg.github.com/mspr-ci/api/invoice_api:0.0.1-snapshot
     - docker run -d -it -p 9000:9000 docker.pkg.github.com/mspr-ci/ihm/invoice_ihm:latest
+    - $(npm bin)/cypress run
 
