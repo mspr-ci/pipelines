@@ -22,7 +22,7 @@ cache: &global_cache
     - git config --global user.name "$GITLAB_USER_NAME"
     - git config --global user.email "$GITLAB_USER_EMAIL"
   after_script:
-    - git push origin master
+    - git push origin HEAD:$CI_COMMIT_REF_NAME
 
 variables:
   VERSION_MESSAGE: "chore(package): update version to %s"
