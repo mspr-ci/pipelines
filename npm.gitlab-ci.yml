@@ -156,12 +156,12 @@ publish image:
     - echo "{\"auths\":{\"$DOCKER_REGISTRY\":{\"username\":\"$DOCKER_USER\",\"password\":\"$DOCKER_PASSWORD\"}}}" > /kaniko/.docker/config.json
     - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/docker/Dockerfile --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:$PACKAGE_VERSION --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
 
-publish package:
-  stage: publish
-  script:
-    - npm config set registry https://${NPM_REGISTRY}
-    - npm config set '//${NPM_REGISTRY}:_authToken' "${NPM_TOKEN}"
-    - npm publish
+#publish package:
+#  stage: publish
+#  script:
+#    - npm config set registry https://${NPM_REGISTRY}
+#    - npm config set '//${NPM_REGISTRY}:_authToken' "${NPM_TOKEN}"
+#    - npm publish
 
 cleanup_build_job:
   stage: publish
