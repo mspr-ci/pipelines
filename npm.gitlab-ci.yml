@@ -137,21 +137,14 @@ deploy production:
   only:
     - master
 
-deploy staging:
-  stage: deploy
-  image: ruby:latest
-  script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
-    - dpl --provider=heroku --app=$HEROKU_APP_STAGING --api-key=$HEROKU_API_KEY
-  only:
-    - staging
-
 deploy branch:
   stage: deploy
   script:
-    - echo 1
+    - npm i -g netlify-cli
+    - netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --dir build/resources/main/static --prod
+  except:
+    - master
+
 
 publish image:
   stage: publish
