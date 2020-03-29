@@ -18,11 +18,20 @@ cache: &global_cache
 
 .prepare_git: &prepare_git
   before_script:
-    - apk add git
+    - apk add git openssh-client
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$GIT_SSH" > ~/.ssh/id_rsa
+    - chmod 400 ~/.ssh/id_rsa
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan github.com >> ~/.ssh/known_hosts
+    - git remote set-url origin $GIT_URL
     - git config --global user.name "$GITLAB_USER_NAME"
     - git config --global user.email "$GITLAB_USER_EMAIL"
+    - GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa" git pull origin master
   after_script:
-    - git push --tags origin HEAD:$CI_COMMIT_REF_NAME
+    - GIT_SSH_COMMAND="ssh -i ~/.ssh/id_rsa" git push --tags origin HEAD:$CI_COMMIT_REF_NAME
 
 variables:
   VERSION_MESSAGE: "chore(package): update version to %s"
@@ -124,7 +133,7 @@ deploy production:
   stage: deploy
   script:
     - npm i -g netlify-cli
-    - netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --prod
+    - netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --dir build/resources/main/static --prod
   only:
     - master
 
