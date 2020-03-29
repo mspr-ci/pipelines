@@ -9,6 +9,7 @@ stages:
   - version
   - build
   - deploy
+  - publish
 
 cache: &global_cache
   policy: pull
@@ -79,12 +80,9 @@ next major:
     - *prepare_git
   script:
     - npm version major -m "$VERSION_MESSAGE"
-    - git push --tags
   when: manual
   only:
-    refs:
-      - master
-      - merge_requests
+    - master
 
 next minor:
   stage: version
@@ -93,9 +91,7 @@ next minor:
   script:
     - npm version minor -m "$VERSION_MESSAGE"
   only:
-    refs:
-      - master
-      - merge_requests
+    - master
 
 next patch:
   stage: version
@@ -104,9 +100,7 @@ next patch:
   script:
     - npm version patch -m "$VERSION_MESSAGE"
   only:
-    refs:
-      - develop
-      - merge_requests
+    - develop
 
 build package:
   stage: build
@@ -126,16 +120,6 @@ generate changelog:
     - npm run changelog
   after_script:
     - "git commit -m 'chore(changelog): update changelog'"
-
-build image:
-  stage: deploy
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
-  script:
-    - PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
-    - echo "{\"auths\":{\"$DOCKER_REGISTRY\":{\"username\":\"$DOCKER_USER\",\"password\":\"$DOCKER_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/docker/Dockerfile --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:$PACKAGE_VERSION --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
 
 deploy production:
   stage: deploy
@@ -160,3 +144,19 @@ deploy branch:
   stage: deploy
   script:
     - echo 1
+
+publish image:
+  stage: publish
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
+    - echo "{\"auths\":{\"$DOCKER_REGISTRY\":{\"username\":\"$DOCKER_USER\",\"password\":\"$DOCKER_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/docker/Dockerfile --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:$PACKAGE_VERSION --destination $DOCKER_REGISTRY/$DOCKER_IMAGE:latest
+
+publish package:
+  stage: publish
+  script:
+    - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>.npmrc
+    - npm publish
