@@ -159,6 +159,7 @@ publish image:
 publish package:
   stage: publish
   script:
+    - npm config set registry https://${NPM_REGISTRY}
     - npm config set '//${NPM_REGISTRY}:_authToken' "${NPM_TOKEN}"
     - npm publish
 
