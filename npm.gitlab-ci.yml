@@ -116,8 +116,6 @@ generate changelog:
     - git config --global user.name "$GITLAB_USER_NAME"
     - git config --global user.email "$GITLAB_USER_EMAIL"
   script:
-    - git config user.name $GIT_ACCESS_USER
-    - git config user.email $GIT_ACCESS_EMAIL
     - npm run changelog
   after_script:
     - "git commit -m 'chore(changelog): update changelog'"
