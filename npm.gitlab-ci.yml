@@ -83,7 +83,6 @@ next major:
   script:
     - npm version major -m "$VERSION_MESSAGE"
   when: manual
-  after
   only:
     - master
 
