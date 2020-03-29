@@ -22,6 +22,8 @@ cache: &global_cache
     - eval $(ssh-agent -s)
     - git remote set-url origin $GIT_URL
     - echo "$GIT_SSH" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
     - git config --global user.name "$GITLAB_USER_NAME"
     - git config --global user.email "$GITLAB_USER_EMAIL"
   after_script:
