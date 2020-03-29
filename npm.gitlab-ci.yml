@@ -166,7 +166,7 @@ publish image:
 publish package:
   stage: publish
   script:
-    - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>~/.npmrc
+    - npm config set '//${NPM_REGISTRY}:_authToken' "${NPM_TOKEN}"
     - npm publish
 
 cleanup_build_job:
