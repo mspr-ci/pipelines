@@ -22,7 +22,7 @@ cache: &global_cache
     - git config --global user.name "$GITLAB_USER_NAME"
     - git config --global user.email "$GITLAB_USER_EMAIL"
   after_script:
-    - git push origin HEAD:$CI_COMMIT_REF_NAME
+    - git push --tags origin HEAD:$CI_COMMIT_REF_NAME
 
 variables:
   VERSION_MESSAGE: "chore(package): update version to %s"
@@ -157,5 +157,16 @@ publish image:
 publish package:
   stage: publish
   script:
-    - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>.npmrc
+    - echo '//${NPM_REGISTRY}:_authToken=${NPM_TOKEN}'>~/.npmrc
     - npm publish
+
+cleanup_build_job:
+  stage: publish
+  before_script:
+    - LATEST_TAG=$(git describe --abbrev=0)
+    - LATEST_VERSION_COMMIT=$(git log -n 1 --pretty=format:%h -- package.json)
+  script:
+    - git tag -d $LATEST_TAG
+    - git revert $LATEST_VERSION_COMMIT
+  <<: *prepare_git
+  when: on_failure
