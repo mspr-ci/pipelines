@@ -44,7 +44,6 @@ docker run:
     - docker login $DOCKER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD
     - docker pull docker.pkg.github.com/mspr-ci/api/invoice_api:0.0.1-snapshot
     - docker pull docker.pkg.github.com/mspr-ci/ihm/invoice_ihm:latest
-    - docker run -d -it -p 8341:8341 invoice_api:0.0.1-snapshot
-    - docker run -d -it -p 9000:9000 invoice_ihm:latest
-
+    - docker run -d -it -p 8341:8341 docker.pkg.github.com/mspr-ci/api/invoice_api:0.0.1-snapshot
+    - docker run -d -it -p 9000:9000 docker.pkg.github.com/mspr-ci/ihm/invoice_ihm:latest
 
