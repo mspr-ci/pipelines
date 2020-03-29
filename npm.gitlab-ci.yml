@@ -117,7 +117,7 @@ generate changelog:
   script:
     - git config user.name $GIT_ACCESS_USER
     - git config user.email $GIT_ACCESS_EMAIL
-    - npm run version
+    - npm run changelog
   after_script:
     - |-
       git commit -m "chore(changelog): update changelog"
