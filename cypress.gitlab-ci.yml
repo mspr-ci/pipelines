@@ -70,12 +70,13 @@ build api:
 
 docker run:
   stage: deploy
-  image:
-    name: gcr.io/kaniko-project/executor:debug
-    entrypoint: [""]
+  image: docker:latest
+  services:
+    - docker:dind
+    - postgres:12.2-alpine
   script: 
-    - cd API/
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/API/Docker/Dockerfile --no-push
+    - sudo docker build -f ./API/docker/Dockerfile -t api .
+    - sudo docker run -d -it -p 8341:8341 api
 
 # docker run ihm: 
 #   stage: deploy
