@@ -69,7 +69,7 @@ docker run:
     - cd API/
     - docker build -f ./docker/Dockerfile -t api .
     - docker run -d -it -p 8341:8341 api
-    - CD ../IHM/
+    - cd ../IHM/
     - docker build -t ./docker/Dockerfile . -t ihm .
     - docker run -d -it -p 9000:9000 ihm
     - cd ../
