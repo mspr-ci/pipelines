@@ -75,8 +75,8 @@ docker run:
     - docker:dind
     - postgres:12.2-alpine
   script: 
-    - sudo docker build -f ./API/docker/Dockerfile -t api .
-    - sudo docker run -d -it -p 8341:8341 api
+    - docker build -f ./API/docker/Dockerfile -t api .
+    - docker run -d -it -p 8341:8341 api
 
 # docker run ihm: 
 #   stage: deploy
