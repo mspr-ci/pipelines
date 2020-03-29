@@ -113,7 +113,6 @@ generate changelog:
   stage: build
   before_script:
     - apk add git
-    - printenv
   script:
     - git config user.name $GIT_ACCESS_USER
     - git config user.email $GIT_ACCESS_EMAIL
